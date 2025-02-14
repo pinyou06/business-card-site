@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 app.use(cors());
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const SPREADSHEET_ID = "1NRKF8JRfKlXFyjkT3hdyo_DSvRHbpRDhDa1-l5D_Io4"; // スプレッドシートID
 
 // Google認証
@@ -15,38 +15,40 @@ const auth = new google.auth.GoogleAuth({
 });
 
 
+// スプレッドシートからデータを取得
 async function getSheetData() {
-    const client = await auth.getClient();
-    const sheets = google.sheets({ version: "v4", auth: client });
-    const range = "シート1!B2:F"; // D列（画像URL）まで取得
+    try {
+        console.log("Google API に接続中...");
+        const client = await auth.getClient();
+        const sheets = google.sheets({ version: "v4", auth: client });
 
-        try {
-            const response = await sheets.spreadsheets.values.get({
-                spreadsheetId: SPREADSHEET_ID,
-                range: range,
-            });
-    
-            console.log("スプレッドシートから取得したデータ:", response.data.values);
-            return response.data.values;
-        } catch (error) {
-            console.error("スプレッドシート取得エラー:", error);
-            throw error;
-        }
+        console.log("データ取得中...");
+        const response = await sheets.spreadsheets.values.get({
+            spreadsheetId: SPREADSHEET_ID,
+            range: "シート1!A1:D10",
+        });
+
+        console.log("取得したデータ:", response.data.values);
+        return response.data.values;
+    } catch (error) {
+        console.error("スプレッドシート取得エラー:", error);
+        throw error;
+    }
 }
 
-
-app.get("/data", async (req, res) => {
+// APIエンドポイントの設定
+app.get("/api/data", async (req, res) => {
     try {
+        console.log("API `/api/data` にリクエストが来ました");
         const data = await getSheetData();
-        console.log("取得データ:", data); // デバッグ用
         res.json(data);
     } catch (error) {
-        console.error("データ取得エラー:", error);
-        res.status(500).json({ error: error.toString() }); // エラーを JSON 形式で送る
+        console.error("API のエラー:", error);
+        res.status(500).send(error.toString());
     }
 });
 
-
+// サーバーを起動
 app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Server running at port ${PORT}`);
 });
