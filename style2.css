@@ -1,0 +1,184 @@
+/* ベーススタイル */
+body {
+    background-color: #e8dcc7;
+    font-family: 'Noto Sans JP', sans-serif;
+    margin: 20px;
+
+}
+
+/* 背景パターン */
+.bg_pattern {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #f3e7e9 0%, #e3eeff 100%);
+    opacity: 0.5;
+    z-index: -1;
+}
+
+/* タイトル */
+h1 {
+    font-size: 28px;
+    color: #9e8b8e;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 10px 30px;
+    border-bottom: 3px solid #9e8b8e;
+    display: inline-block;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1:hover {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+
+/* サブタイトル */
+h2 {
+    font-size: 20px;
+    color: #9e8b8e;
+    margin-bottom: 20px;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.card {
+    background: #eaf4f4;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 0px 6px #eaf4f4 ;
+    border: 7px double #ffffff;
+    text-align: center;
+    width: 520px;
+    display: flex;
+    flex-direction: column; /* 縦方向に整列 */
+    align-items: center;
+}
+
+.card h2 {
+    font-size: 20px;
+    color: #9e8b8e;
+}
+
+/* ボタンスタイル */
+button {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #f19072 0%, #ef857d 100%);
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+button:hover {
+    background: linear-gradient(135deg, #ef857d 0%, #f19072 100%);
+    transform: scale(1.05);
+}
+
+/* 名刺画像のレイアウト */
+.images {
+    display: flex;
+    flex-direction: column; /* 縦並び */
+    align-items: center;
+    gap: 50px;
+}
+
+/* 画像を包む要素（クリックで裏返し） */
+.image-container {
+    width: 500px;
+    height: 290px;
+    perspective: 1000px; /* 3D 効果 */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.image-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    backface-visibility: hidden;
+}
+
+/* クリックで裏返す */
+.image-container.flipped .image-inner {
+    transform: rotateY(180deg);
+}
+
+/* 画像のスタイル */
+.images img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    backface-visibility: hidden;
+    object-fit: cover;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 表面 */
+.front {
+    z-index: 2;
+}
+
+/* 裏面 */
+.back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #e8dcc7; /* カードの背景 */
+    border-radius: 10px;
+    transform: rotateY(180deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    backface-visibility: hidden;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.back p {
+    display: none;
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+    margin-top: 10px;
+}
+
+/* スマホ対応 */
+@media (max-width: 600px) {
+    .image-container {
+        width: 500px;
+        height: 150px;
+    }
+    .card {
+        width: 320px;
+    }
+    img {
+        width: 270px;
+    }
+    .back {
+        width: 100%;
+        height: 100%;
+    }
+}
