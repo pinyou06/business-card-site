@@ -1,6 +1,6 @@
 async function fetchData() {
     try {
-        const response = await fetch("http://localhost:3000/data");
+        const response = await fetch("https://business-card-site-new.vercel.app/api/data");
         const data = await response.json();
         console.log("フロントエンド取得データ:", data); // デバッグ用
 
